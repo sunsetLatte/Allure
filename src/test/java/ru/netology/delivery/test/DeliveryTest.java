@@ -35,7 +35,7 @@ public class DeliveryTest {
     }
 
 
-    @Test                                        // Позитивный тест
+    @Test                                        // Позитивный тест. Регстрация проходит, далее – перепланировка на другую дату
     void shouldRegisteredAndReplanMeetingDay() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
@@ -64,8 +64,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Встреча успешно запланирована на " + secondMeetingDate));
     }
 
-    @Test                // Негативный тест, невалидный город
-    void InvalidCity() {
+    @Test                // Негативный тест. Регистрация не проходит с невалидным городом
+    void shouldNotRegisteredWithInvalidCity() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 5;
@@ -82,8 +82,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Доставка в выбранный город недоступна"));
     }
 
-    @Test                // Негативный тест, пустое поля города
-    void EmptyCity() {
+    @Test                // Негативный тест. Регистрация не проходит с незаполенным полем города
+    void shouldNotRegisteredWithEmptyCity() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 6;
@@ -100,8 +100,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Поле обязательно для заполнения"));
     }
 
-    @Test                // Негативный тест, невалидное имя
-    void InvalidName() {
+    @Test                // Негативный тест. Регистрация не проходит с невалидным именем
+    void shouldNotRegisteredWithInvalidName() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 7;
@@ -118,8 +118,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
-    @Test                // Негативный тест, пустое имя
-    void EmptyName() {
+    @Test                // Негативный тест. Регистрация не проходит с незаполенным полем имени
+    void shouldNotRegisteredWithEmptyName() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 8;
@@ -136,8 +136,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Поле обязательно для заполнения"));
     }
 
-    @Test                // Позитивный тест, имя содержит букву "ё". БАГ
-    void BagSymbolInName() {
+    @Test                // Позитивный тест. Решистация порходит, если имя содержит букву "ё"
+    void shouldRegisteredAndReplanMeetingDayWihLetterYoInName() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 4;
@@ -165,8 +165,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Встреча успешно запланирована на " + secondMeetingDate));
     }
 
-    @Test                 // Негативный тест, некорректный телефон. БАГ
-    void   BagInvalidPhone() {
+    @Test                 // Негативный тест. Регистрация не проходит с невалидным телефоном
+    void   shouldNotRegisteredWithInvalidPhone() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 10;
@@ -175,7 +175,7 @@ public class DeliveryTest {
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(firstMeetingDate);
         $("[data-test-id='name'] input").setValue(validUser.getName());
-        $("[data-test-id='phone'] input").setValue("+791699300331");
+        $("[data-test-id='phone'] input").setValue("911");
         $("[data-test-id='agreement']").click();
         $$("button").find(exactText("Запланировать")).click();
         $(withText("Телефон указан неверно"))
@@ -183,8 +183,8 @@ public class DeliveryTest {
                 .shouldHave(exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
-    @Test                 // Негативный тест, пустой телефон
-    void   EmptyPhone() {
+    @Test                 // Негативный тест. Регистрация не проходит с пустым полем телефона
+    void   shouldNotRegisteredWithEmptyPhone() {
 //        Configuration.holdBrowserOpen = true;
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 11;
